@@ -55,3 +55,18 @@ userRouter.post("/register", async (req : Request, res : Response) => {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error})
     }
 })
+
+userRouter.post("/login", async (req : Request, res : Response) => {
+    try {
+        const {email, password} = req.body
+        if (!email || !password) {
+            return res.status(StatusCodes.BAD_REQUEST).json({error : "Please provide all the required parameters.."})
+        }
+        
+        const user = await database.findByEmail(email)
+
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({error : "No user exist with email provided..."})
+        }
+    }
+})
